@@ -1,5 +1,5 @@
 'use client';
-import React, { Suspense } from 'react';
+import React, { Suspense, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 
 function OpenContent() {
@@ -21,23 +21,38 @@ function OpenContent() {
         <source src={`${bucketUrl}/${vibe}.mp4`} type="video/mp4" />
       </video>
 
-      <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px', paddingTop: '15vh' }}>
-        <h1 style={{ color: '#D4AF37', letterSpacing: '20px', fontSize: '3.5rem', fontWeight: 'normal', marginBottom: '10vh', textAlign: 'center' }}>HARMONICA</h1>
+      <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px', paddingTop: '10vh' }}>
+        <h1 style={{ color: '#D4AF37', letterSpacing: '20px', fontSize: 'clamp(2rem, 8vw, 3.5rem)', marginBottom: '8vh', textAlign: 'center' }}>HARMONICA</h1>
         
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '50px', flexWrap: 'wrap', maxWidth: '1100px' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '40px', flexWrap: 'wrap', maxWidth: '1100px' }}>
           {wordsArray.map((w, i) => (
-            <div key={i} style={{ textAlign: 'center' }}>
-              <div style={{ display: 'flex', boxShadow: '0 0 60px rgba(212, 175, 55, 0.5)', borderRadius: '12px', overflow: 'hidden', border: '1px solid #D4AF37', background: 'rgba(0,0,0,0.8)' }}>
-                <img src={`${bucketUrl}/${w.first}.png`} style={{ width: '150px', height: '210px', objectFit: 'cover' }} alt={w.first} />
-                <img src={`${bucketUrl}/${w.oneBeforeLast}.png`} style={{ width: '150px', height: '210px', objectFit: 'cover' }} alt={w.oneBeforeLast} />
+            <div key={i} className="tile-container" style={{ textAlign: 'center', cursor: 'pointer' }}>
+              <div style={{ display: 'flex', boxShadow: '0 0 50px rgba(212, 175, 55, 0.3)', borderRadius: '12px', overflow: 'hidden', border: '1px solid #D4AF37', background: 'rgba(0,0,0,0.8)' }}>
+                <img src={`${bucketUrl}/${w.first}.png`} style={{ width: 'clamp(100px, 20vw, 150px)', height: 'auto', objectFit: 'cover' }} alt="" />
+                <img src={`${bucketUrl}/${w.oneBeforeLast}.png`} style={{ width: 'clamp(100px, 20vw, 150px)', height: 'auto', objectFit: 'cover' }} alt="" />
               </div>
-              {/* RESTORED LABEL */}
-              <p style={{ color: '#D4AF37', marginTop: '20px', letterSpacing: '5px', fontSize: '1rem', fontWeight: 'bold' }}>{w.original}</p>
+              
+              {/* THE SECRET REVEAL LABEL */}
+              <p className="secret-label" style={{ 
+                color: '#D4AF37', marginTop: '20px', letterSpacing: '5px', fontSize: '1rem', 
+                fontWeight: 'bold', opacity: 0, transition: 'opacity 0.5s ease', transform: 'translateY(10px)'
+              }}>
+                {w.original}
+              </p>
             </div>
           ))}
         </div>
-        <p style={{ color: '#D4AF37', marginTop: '80px', opacity: 0.5, letterSpacing: '6px', fontSize: '0.7rem' }}>A GIFT OF STASHED COGNITION</p>
       </div>
+
+      <style jsx>{`
+        .tile-container:hover .secret-label {
+          opacity: 1 !important;
+          transform: translateY(0) !important;
+        }
+        @media (max-width: 768px) {
+          .secret-label { opacity: 0.3; } /* Hint on mobile */
+        }
+      `}</style>
     </main>
   );
 }
