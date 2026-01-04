@@ -1,1 +1,32 @@
+/* This removes the default white background and sets the Sanctuary mood */
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+  color: gold;
+  font-family: 'serif', Times, serif;
+  overflow-x: hidden;
+  height: 100%;
+  width: 100%;
+}
 
+* {
+  box-sizing: border-box;
+}
+
+/* Ensures your background videos are immersive and edge-to-edge */
+video {
+  pointer-events: none;
+  object-fit: cover;
+}
+
+/* Minimalist scrollbar to keep the focus on the art */
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: #000;
+}
+::-webkit-scrollbar-thumb {
+  background: #333;
+}
