@@ -8,36 +8,39 @@ function OrbContent() {
   const tiles = searchParams.get('tiles') || '';
   const bucketUrl = "https://storage.googleapis.com/simple-bucket-27";
 
-  // The Rule: First and One-Before-Last
-  const wordsArray = tiles.split(/[ ,]+/).filter(Boolean).map(word => {
-    const first = word[0].toUpperCase();
-    const oneBeforeLast = word.length > 1 ? word[word.length - 2].toUpperCase() : first;
-    return { first, oneBeforeLast };
+  const wordsArray = decodeURIComponent(tiles).split(',').filter(Boolean).map(word => {
+    // FORCE UPPERCASE: To match your A5.png, K5.png bucket files
+    const clean = word.replace(/[^a-zA-Z]/g, "").toUpperCase();
+    const first = clean[0] || 'A';
+    const oneBeforeLast = clean.length > 1 ? clean[clean.length - 2] : first;
+    return { original: word.toUpperCase(), first, oneBeforeLast };
   });
 
   return (
-    <main style={{ minHeight: '100vh', background: '#000', position: 'relative', overflow: 'hidden' }}>
-      <video autoPlay loop muted playsInline style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.3 }}>
+    <main style={{ minHeight: '100vh', background: '#000', position: 'relative', overflowX: 'hidden' }}>
+      {/* BACKGROUND CONTINUITY */}
+      <video key={vibe} autoPlay loop muted playsInline style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.3, zIndex: -1 }}>
         <source src={`${bucketUrl}/${vibe}.mp4`} type="video/mp4" />
       </video>
 
-      <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: '10vh' }}>
-        <h2 style={{ color: '#D4AF37', letterSpacing: '12px', marginBottom: '8vh' }}>THE UNFOLDING</h2>
+      <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px', paddingTop: '8vh' }}>
+        <h2 style={{ color: '#D4AF37', letterSpacing: '12px', marginBottom: '6vh', textAlign: 'center' }}>THE UNFOLDING</h2>
         
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '40px', flexWrap: 'wrap', maxWidth: '1200px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '40px', width: '100%', maxWidth: '1200px', justifyItems: 'center' }}>
           {wordsArray.map((w, i) => (
-            <div key={i} style={{ 
-              display: 'flex', border: '2px solid #D4AF37', borderRadius: '15px', overflow: 'hidden', 
-              boxShadow: '0 0 40px rgba(212, 175, 55, 0.4)', background: 'rgba(0,0,0,0.8)' 
-            }}>
-              <img src={`${bucketUrl}/${w.first}.png`} alt={w.first} style={{ width: '150px', height: '150px' }} />
-              <img src={`${bucketUrl}/${w.oneBeforeLast}.png`} alt={w.oneBeforeLast} style={{ width: '150px', height: '150px' }} />
+            <div key={i} style={{ textAlign: 'center' }}>
+              <div style={{ display: 'flex', border: '2px solid #D4AF37', borderRadius: '15px', overflow: 'hidden', background: 'rgba(0,0,0,0.8)' }}>
+                {/* LARGE ICONS: Now strictly calling UpperCase + 5 */}
+                <img src={`${bucketUrl}/${w.first}5.png`} style={{ width: '135px', height: '190px', objectFit: 'cover' }} />
+                <img src={`${bucketUrl}/${w.oneBeforeLast}5.png`} style={{ width: '135px', height: '190px', objectFit: 'cover' }} />
+              </div>
+              <p style={{ color: '#D4AF37', marginTop: '15px', letterSpacing: '4px', fontSize: '0.9rem', fontWeight: 'bold' }}>{w.original}</p>
             </div>
           ))}
         </div>
 
-        <button onClick={() => window.location.href = `/open?vibe=${vibe}&tiles=${tiles}`}
-          style={{ marginTop: '10vh', padding: '15px 50px', border: '1px solid #D4AF37', color: '#D4AF37', background: 'transparent', letterSpacing: '5px', cursor: 'pointer', borderRadius: '50px' }}>
+        <button onClick={() => window.location.href = `/open?vibe=${vibe}&tiles=${encodeURIComponent(tiles)}`}
+          style={{ marginTop: '8vh', padding: '15px 60px', border: '1px solid #D4AF37', color: '#D4AF37', background: 'transparent', letterSpacing: '5px', cursor: 'pointer', borderRadius: '50px', marginBottom: '50px' }}>
           SEAL & SHARE
         </button>
       </div>
@@ -45,11 +48,4 @@ function OrbContent() {
   );
 }
 
-// MANDATORY: This line tells Vercel this file is a page
-export default function OrbPage() {
-  return (
-    <Suspense fallback={<div style={{ color: '#D4AF37', textAlign: 'center', marginTop: '20vh' }}>STASHING COGNITION...</div>}>
-      <OrbContent />
-    </Suspense>
-  );
-}
+export default function OrbPage() { return <Suspense><OrbContent /></Suspense>; }
