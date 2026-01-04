@@ -8,7 +8,7 @@ function OrbContent() {
   const tiles = searchParams.get('tiles') || '';
   const bucketUrl = "https://storage.googleapis.com/simple-bucket-27";
 
-  // The Harmonica Rule: First and One-Before-Last letter of every word
+  // The Rule: First and One-Before-Last
   const wordsArray = tiles.split(/[ ,]+/).filter(Boolean).map(word => {
     const first = word[0].toUpperCase();
     const oneBeforeLast = word.length > 1 ? word[word.length - 2].toUpperCase() : first;
@@ -17,7 +17,6 @@ function OrbContent() {
 
   return (
     <main style={{ minHeight: '100vh', background: '#000', position: 'relative', overflow: 'hidden' }}>
-      {/* Background Vibe */}
       <video autoPlay loop muted playsInline style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.3 }}>
         <source src={`${bucketUrl}/${vibe}.mp4`} type="video/mp4" />
       </video>
@@ -25,7 +24,6 @@ function OrbContent() {
       <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: '10vh' }}>
         <h2 style={{ color: '#D4AF37', letterSpacing: '12px', marginBottom: '8vh' }}>THE UNFOLDING</h2>
         
-        {/* THE HARMONICA TILES */}
         <div style={{ display: 'flex', justifyContent: 'center', gap: '40px', flexWrap: 'wrap', maxWidth: '1200px' }}>
           {wordsArray.map((w, i) => (
             <div key={i} style={{ 
@@ -47,6 +45,7 @@ function OrbContent() {
   );
 }
 
+// MANDATORY: This line tells Vercel this file is a page
 export default function OrbPage() {
   return (
     <Suspense fallback={<div style={{ color: '#D4AF37', textAlign: 'center', marginTop: '20vh' }}>STASHING COGNITION...</div>}>
