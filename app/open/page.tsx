@@ -21,7 +21,7 @@ function OpenContent() {
   return (
     <main style={{ minHeight: '100vh', background: '#000', position: 'relative', overflowX: 'hidden', fontFamily: 'serif' }}>
       
-      {/* VIDEO FIX: The 'key' attribute with autoPlay/muted/playsInline forces the reload */}
+      {/* VIDEO FIX: The 'key' attribute forces the video to wake up */}
       <video 
         key={vibe} 
         autoPlay 
@@ -33,7 +33,7 @@ function OpenContent() {
         <source src={`${bucketUrl}/${vibe}.mp4`} type="video/mp4" />
       </video>
 
-      {/* AMBIENT AUDIO: Set to your sanctuary voice */}
+      {/* AMBIENT AUDIO: Using your ambient.mp3 file */}
       <audio ref={audioRef} autoPlay loop muted={isMuted} src={`${bucketUrl}/ambient.mp3`} preload="auto" />
 
       <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px', paddingTop: '10vh' }}>
@@ -57,6 +57,7 @@ function OpenContent() {
           {wordsArray.map((w, i) => (
             <div key={i} className="group" style={{ textAlign: 'center', cursor: 'pointer' }}>
               <div style={{ display: 'flex', border: '1px solid #D4AF37', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 0 40px rgba(212, 175, 55, 0.3)', background: 'rgba(0,0,0,0.8)' }}>
+                {/* LARGE ICONS: Uppercase letters with 5 suffix */}
                 <img src={`${bucketUrl}/${w.first}5.png`} style={{ width: '90px', height: '130px', objectFit: 'cover' }} />
                 <img src={`${bucketUrl}/${w.oneBeforeLast}5.png`} style={{ width: '90px', height: '130px', objectFit: 'cover' }} />
               </div>
