@@ -1,6 +1,15 @@
 'use client';
 import React, { Suspense, useState, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
+export const metadata = {
+  title: 'A Harmonica Message for You',
+  description: 'You have received a secret visual gift.',
+  openGraph: {
+    title: 'Harmonica',
+    description: 'Unfold a stashed cognition message.',
+    images: [{ url: 'https://storage.googleapis.com/simple-bucket-27/gold-vault-final.png' }],
+  },
+};
 
 function OpenContent() {
   const searchParams = useSearchParams();
