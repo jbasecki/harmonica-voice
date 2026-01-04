@@ -1,5 +1,5 @@
 'use client';
-import React, { Suspense, useState, useRef } from 'react';
+import React, { Suspense, useState, useRef, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 
 function OpenContent() {
@@ -11,6 +11,7 @@ function OpenContent() {
   const bucketUrl = "https://storage.googleapis.com/simple-bucket-27";
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
+  // Rule: UpperCase letters with 5 suffix
   const wordsArray = decodeURIComponent(tiles).split(',').filter(Boolean).map(word => {
     const clean = word.replace(/[^a-zA-Z]/g, "").toUpperCase();
     const first = clean[0] || 'A';
@@ -20,11 +21,13 @@ function OpenContent() {
 
   return (
     <main style={{ minHeight: '100vh', background: '#000', position: 'relative', overflowX: 'hidden', fontFamily: 'serif' }}>
+      
+      {/* VIDEO FIX: Key attribute forces browser to reload vibe */}
       <video key={vibe} autoPlay loop muted playsInline style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.4, zIndex: -1 }}>
         <source src={`${bucketUrl}/${vibe}.mp4`} type="video/mp4" />
       </video>
 
-      {/* AMBIENT AUDIO: Fixed to your new file */}
+      {/* AMBIENT AUDIO */}
       <audio ref={audioRef} autoPlay loop muted={isMuted} src={`${bucketUrl}/ambient.mp3`} preload="auto" />
 
       <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px', paddingTop: '10vh' }}>
