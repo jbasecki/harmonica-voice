@@ -19,6 +19,7 @@ function OpenContent() {
   });
 
   const copyGiftLink = () => {
+    // This will copy the link with your domain once Vercel is linked
     navigator.clipboard.writeText(window.location.href);
     alert("Gift Link Copied to Clipboard!");
   };
@@ -26,7 +27,7 @@ function OpenContent() {
   return (
     <main style={{ minHeight: '100vh', background: '#000', position: 'relative', overflowX: 'hidden', fontFamily: 'serif' }}>
       
-      {/* VIDEO FIX: Forced reload with 'key' */}
+      {/* VIDEO FIX: The 'key' attribute forces the player to find the bucket file */}
       <video 
         key={vibe} 
         autoPlay 
@@ -42,7 +43,7 @@ function OpenContent() {
 
       <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px', paddingTop: '10vh' }}>
         
-        {/* THE HERO MESSAGE */}
+        {/* THE HERO MESSAGE: Your English heart */}
         <div style={{ maxWidth: '750px', textAlign: 'center', marginBottom: '8vh', padding: '40px', background: 'rgba(0,0,0,0.7)', borderRadius: '30px', border: '1px solid rgba(212,175,55,0.4)', boxShadow: '0 20px 60px rgba(0,0,0,0.8)' }}>
           <p style={{ color: '#D4AF37', fontSize: '1.8rem', fontStyle: 'italic', lineHeight: '1.7' }}>
             "{decodeURIComponent(message.replace(/\+/g, ' '))}"
@@ -54,6 +55,7 @@ function OpenContent() {
           {wordsArray.map((w, i) => (
             <div key={i} className="group" style={{ textAlign: 'center', cursor: 'pointer' }}>
               <div style={{ display: 'flex', border: '1px solid #D4AF37', borderRadius: '12px', overflow: 'hidden', background: 'rgba(0,0,0,0.8)' }}>
+                {/* Rule: UpperCase + 5 Suffix */}
                 <img src={`${bucketUrl}/${w.first}5.png`} style={{ width: '90px', height: '130px', objectFit: 'cover' }} />
                 <img src={`${bucketUrl}/${w.oneBeforeLast}5.png`} style={{ width: '90px', height: '130px', objectFit: 'cover' }} />
               </div>
@@ -62,8 +64,8 @@ function OpenContent() {
           ))}
         </div>
 
-        {/* THE DONE PRODUCT: COPY BUTTON */}
-        <button onClick={copyGiftLink} style={{ padding: '15px 40px', background: '#D4AF37', color: '#000', border: 'none', borderRadius: '50px', fontWeight: 'bold', cursor: 'pointer', letterSpacing: '2px' }}>
+        {/* SHAREABLE PACKAGE */}
+        <button onClick={copyGiftLink} style={{ padding: '15px 40px', background: '#D4AF37', color: '#000', border: 'none', borderRadius: '50px', fontWeight: 'bold', cursor: 'pointer', letterSpacing: '2px', marginBottom: '50px' }}>
           COPY GIFT LINK TO SHARE
         </button>
       </div>
