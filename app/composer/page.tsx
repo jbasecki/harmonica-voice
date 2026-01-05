@@ -17,24 +17,26 @@ function ComposerContent() {
 
   return (
     <main style={{ minHeight: '100vh', background: '#000', color: '#D4AF37', position: 'relative', overflowX: 'hidden', fontFamily: 'serif' }}>
+      {/* VIDEO WAKE-UP */}
       <video key={vibe} autoPlay loop muted playsInline style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.3, zIndex: -1 }}>
         <source src={`${bucketUrl}/${vibe}.mp4`} type="video/mp4" />
       </video>
 
       <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px', paddingTop: '5vh' }}>
-        {/* PREVIEW TILES WITH LABELS FOR CLARITY */}
-        <div style={{ width: '100%', maxWidth: '1100px', display: 'flex', justifyContent: 'center', gap: '15px', flexWrap: 'wrap', marginBottom: '30px' }}>
+        
+        {/* REAL-TIME ART PREVIEW */}
+        <div style={{ width: '100%', maxWidth: '1100px', display: 'flex', justifyContent: 'center', gap: '15px', flexWrap: 'wrap', marginBottom: '30px', minHeight: '180px' }}>
           {selectedWords.map((word, i) => {
             const clean = word.replace(/[^a-zA-Z]/g, "").toUpperCase();
             const first = clean[0] || 'A';
             const oneBeforeLast = clean.length > 1 ? clean[clean.length - 2] : first;
             return (
               <div key={i} style={{ textAlign: 'center' }}>
-                <div style={{ display: 'flex', border: '1px solid #D4AF37', borderRadius: '8px', overflow: 'hidden', width: '100px', height: '140px' }}>
-                  <img src={`${bucketUrl}/${first}5.png`} style={{ width: '50%', height: '100%', objectFit: 'cover' }} />
-                  <img src={`${bucketUrl}/${oneBeforeLast}5.png`} style={{ width: '50%', height: '100%', objectFit: 'cover' }} />
+                <div style={{ display: 'flex', border: '1px solid #D4AF37', borderRadius: '8px', overflow: 'hidden', width: '100px', height: '140px', background: 'rgba(0,0,0,0.8)' }}>
+                  <img src={`${bucketUrl}/${first}5.png`} style={{ width: '50%', height: '100%', objectFit: 'cover' }} alt="" />
+                  <img src={`${bucketUrl}/${oneBeforeLast}5.png`} style={{ width: '50%', height: '100%', objectFit: 'cover' }} alt="" />
                 </div>
-                <p style={{ fontSize: '0.7rem', marginTop: '5px' }}>{word.toUpperCase()}</p>
+                <p style={{ fontSize: '0.7rem', marginTop: '8px', letterSpacing: '2px' }}>{word.toUpperCase()}</p>
               </div>
             );
           })}
@@ -45,11 +47,11 @@ function ComposerContent() {
             placeholder="Write your message here..."
             value={text}
             onChange={(e) => setText(e.target.value)}
-            style={{ width: '100%', background: 'transparent', border: 'none', color: '#D4AF37', fontSize: '1.4rem', outline: 'none', height: '180px', resize: 'none', marginBottom: '25px' }}
+            style={{ width: '100%', background: 'transparent', border: 'none', color: '#D4AF37', fontSize: '1.4rem', outline: 'none', height: '150px', resize: 'none', marginBottom: '25px', lineHeight: '1.6' }}
           />
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+          <div style={{ borderTop: '1px solid #222', paddingTop: '20px', display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
             {words.map((word, i) => (
-              <button key={i} onClick={() => toggleWord(word)} style={{ padding: '8px 16px', borderRadius: '8px', background: selectedWords.includes(word) ? '#D4AF37' : 'transparent', color: selectedWords.includes(word) ? '#000' : '#D4AF37', border: '1px solid #D4AF37', cursor: 'pointer' }}>{word}</button>
+              <button key={i} onClick={() => toggleWord(word)} style={{ cursor: 'pointer', padding: '8px 16px', borderRadius: '8px', background: selectedWords.includes(word) ? '#D4AF37' : 'transparent', color: selectedWords.includes(word) ? '#000' : '#D4AF37', border: '1px solid #D4AF37', transition: '0.2s' }}>{word}</button>
             ))}
           </div>
         </div>
