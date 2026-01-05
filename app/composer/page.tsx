@@ -4,69 +4,50 @@ import { useSearchParams } from 'next/navigation';
 
 function ComposerContent() {
   const searchParams = useSearchParams();
-  const [artist, setArtist] = useState('gold'); 
+  const [vibe, setVibe] = useState(searchParams.get('vibe') || '1'); // The Atmosphere
   const [text, setText] = useState('');
-  const [selectedWords, setSelectedWords] = useState<string[]>([]);
   const bucketUrl = "https://storage.googleapis.com/simple-bucket-27";
 
-  const artists = [
-    { id: 'gold', name: 'GOLDEN HARMONICA' },
-    { id: 'silver', name: 'STERLING SILVER' },
-    { id: 'noir', name: 'NOIR ETCHING' }
+  const atmospheres = [
+    { id: '1', name: 'SANCTUARY' },
+    { id: '8', name: 'GOLDEN' },
+    { id: '18', name: 'SNOWY' }
   ];
 
-  const artistFilters: Record<string, string> = {
-    gold: 'none',
-    silver: 'grayscale(100%) brightness(1.2) contrast(1.1) sepia(0.1)',
-    noir: 'grayscale(100%) brightness(0.6) contrast(1.8)'
-  };
-
-  const toggleWord = (word: string) => {
-    setSelectedWords(prev => prev.includes(word) ? prev.filter(w => w !== word) : [...prev, word]);
-  };
-
-  const words = text.split(/[ \n]+/).filter(Boolean);
-
   return (
-    <main style={{ minHeight: '100vh', background: '#000', color: '#D4AF37', padding: '20px', fontFamily: 'serif' }}>
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: '5vh' }}>
+    <main style={{ minHeight: '100vh', background: '#000', color: '#D4AF37', position: 'relative', overflow: 'hidden', fontFamily: 'serif' }}>
+      
+      {/* 1. ATMOSPHERE: The persistent video background */}
+      <video key={vibe} autoPlay loop muted playsInline style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.5, zIndex: -1 }}>
+        <source src={`${bucketUrl}/${vibe}.mp4`} type="video/mp4" />
+      </video>
+
+      <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px', paddingTop: '10vh' }}>
         
-        <div style={{ marginBottom: '30px', textAlign: 'center' }}>
-          <p style={{ fontSize: '0.6rem', letterSpacing: '3px', marginBottom: '15px', opacity: 0.6 }}>SELECT ARTISTIC MODALITY</p>
-          <div style={{ display: 'flex', gap: '10px' }}>
-            {artists.map(a => (
-              <button key={a.id} onClick={() => setArtist(a.id)} style={{ padding: '8px 20px', background: artist === a.id ? '#D4AF37' : 'transparent', color: artist === a.id ? '#000' : '#D4AF37', border: '1px solid #D4AF37', borderRadius: '5px', cursor: 'pointer', fontSize: '0.7rem' }}>
-                {a.name}
-              </button>
-            ))}
-          </div>
+        {/* 2. ATMOSPHERE SELECTOR: Change the mood instantly */}
+        <div style={{ marginBottom: '40px', display: 'flex', gap: '15px' }}>
+          {atmospheres.map(a => (
+            <button key={a.id} onClick={() => setVibe(a.id)} style={{ padding: '10px 20px', background: vibe === a.id ? '#D4AF37' : 'transparent', color: vibe === a.id ? '#000' : '#D4AF37', border: '1px solid #D4AF37', borderRadius: '5px', cursor: 'pointer', fontSize: '0.7rem', fontWeight: 'bold', letterSpacing: '2px' }}>
+              {a.name}
+            </button>
+          ))}
         </div>
 
-        <div style={{ width: '100%', maxWidth: '1100px', display: 'flex', justifyContent: 'center', gap: '15px', flexWrap: 'wrap', marginBottom: '30px', minHeight: '180px' }}>
-          {selectedWords.map((word, i) => {
-            const clean = word.replace(/[^a-zA-Z]/g, "").toUpperCase();
-            const first = clean[0] || 'A';
-            return (
-              <div key={i} style={{ border: '1px solid #D4AF37', borderRadius: '8px', overflow: 'hidden', width: '100px', height: '140px', filter: artistFilters[artist] }}>
-                <img src={`${bucketUrl}/${first}5.png`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-              </div>
-            );
-          })}
+        {/* 3. THE MESSAGE: Clean overlay on top of video */}
+        <div style={{ width: '100%', maxWidth: '800px', padding: '40px', background: 'rgba(0, 0, 0, 0.7)', borderRadius: '30px', border: '1px solid rgba(212,175,55,0.3)' }}>
+          <textarea 
+            placeholder="Write your message here..."
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            style={{ width: '100%', background: 'transparent', border: 'none', color: '#D4AF37', fontSize: '1.6rem', outline: 'none', height: '200px', resize: 'none', textAlign: 'center', fontStyle: 'italic' }}
+          />
         </div>
 
-        <div style={{ width: '100%', maxWidth: '800px', padding: '40px', background: 'rgba(15, 15, 15, 0.9)', borderRadius: '30px', border: '1px solid #333' }}>
-          <textarea placeholder="Write your message..." value={text} onChange={(e) => setText(e.target.value)} style={{ width: '100%', background: 'transparent', border: 'none', color: '#D4AF37', fontSize: '1.4rem', outline: 'none', height: '150px', resize: 'none' }} />
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginTop: '20px' }}>
-            {words.map((word, i) => (
-              <button key={i} onClick={() => toggleWord(word)} style={{ cursor: 'pointer', padding: '8px 16px', borderRadius: '8px', background: selectedWords.includes(word) ? '#D4AF37' : 'transparent', color: selectedWords.includes(word) ? '#000' : '#D4AF37', border: '1px solid #D4AF37' }}>{word}</button>
-            ))}
-          </div>
-        </div>
-
+        {/* 4. THE BRIDGE: Move to the Choice Phase */}
         <button 
-          onClick={() => window.location.href = `/composer2?artist=${artist}&message=${encodeURIComponent(text)}&tiles=${encodeURIComponent(selectedWords.join(','))}`}
-          style={{ marginTop: '50px', padding: '18px 80px', background: 'transparent', border: '1px solid #D4AF37', color: '#D4AF37', borderRadius: '50px', cursor: 'pointer', letterSpacing: '8px', fontWeight: 'bold' }}>
-          CONTINUE TO CURATION
+          onClick={() => window.location.href = `/composer2?vibe=${vibe}&message=${encodeURIComponent(text)}`}
+          style={{ marginTop: '50px', padding: '18px 80px', background: '#D4AF37', color: '#000', borderRadius: '50px', cursor: 'pointer', letterSpacing: '8px', fontWeight: 'bold' }}>
+          CONTINUE
         </button>
       </div>
     </main>
