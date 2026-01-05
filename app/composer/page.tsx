@@ -60,8 +60,12 @@ function ComposerContent() {
             <div style={{ padding: '20px', background: '#1a1a1a', borderRadius: '10px', marginBottom: '30px', border: '1px solid #333', color: '#555' }}>
               Stripe Credit Card Element loads here...
             </div>
-            <button style={{ width: '100%', background: '#D4AF37', color: '#000', padding: '18px', borderRadius: '50px', border: 'none', fontWeight: 'bold', cursor: 'pointer', letterSpacing: '2px' }}>COMPLETE TRANSACTION</button>
-            <p onClick={() => setShowStripe(false)} style={{ color: '#D4AF37', marginTop: '20px', fontSize: '0.7rem', cursor: 'pointer', opacity: 0.6 }}>Return to Sanctuary</p>
+            <button 
+  onClick={() => window.location.href = https://buy.stripe.com/00w28s3mQ7dj6srevQfnO0b
+  style={{ width: '100%', background: '#D4AF37', color: '#000', padding: '18px', borderRadius: '50px', border: 'none', fontWeight: 'bold', cursor: 'pointer', letterSpacing: '2px' }}>
+  COMPLETE TRANSACTION
+</button>
+<p onClick={() => setShowStripe(false)} style={{ color: '#D4AF37', marginTop: '20px', fontSize: '0.7rem', cursor: 'pointer', opacity: 0.6 }}>Return to Sanctuary</p>
           </div>
         </div>
       )}
