@@ -1,93 +1,53 @@
 'use client';
-import React, { Suspense, useState, useRef, useEffect } from 'react';
+import React, { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 
 function OpenContent() {
   const searchParams = useSearchParams();
-  const [isMuted, setIsMuted] = useState(false);
-  const vibe = searchParams.get('vibe') || '14'; 
+  const vibe = searchParams.get('vibe') || '1'; // The curated Atmosphere
   const message = searchParams.get('message') || '';
-  const tiles = searchParams.get('tiles') || '';
+  const tilesStr = searchParams.get('tiles') || '';
+  const artist = searchParams.get('artist') || 'gold';
   const bucketUrl = "https://storage.googleapis.com/simple-bucket-27";
   
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const audioRef = useRef<HTMLAudioElement>(null);
-
-  // THE VIDEO TRIGGER: Forces the video to play when the page loads
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.load();
-      videoRef.current.play().catch(e => console.log("Video wait:", e));
-    }
-  }, [vibe]);
-
-  const wordsArray = decodeURIComponent(tiles).split(',').filter(Boolean).map(word => {
-    const clean = word.replace(/[^a-zA-Z]/g, "").toUpperCase();
-    const first = clean[0] || 'A';
-    const oneBeforeLast = clean.length > 1 ? clean[clean.length - 2] : first;
-    return { original: word.toUpperCase(), first, oneBeforeLast };
-  });
+  const selectedWords = tilesStr.split(',').filter(Boolean);
+  const folder = artist === 'gold' ? '5' : '6'; // Mapping the Artist Modality
 
   return (
-    <main style={{ minHeight: '100vh', background: '#000', position: 'relative', overflowX: 'hidden', fontFamily: 'serif' }}>
+    <main style={{ minHeight: '100vh', background: '#000', color: '#D4AF37', position: 'relative', overflowX: 'hidden', fontFamily: 'serif' }}>
       
-      {/* CINEMATIC BACKGROUND */}
-      <video 
-        ref={videoRef}
-        key={vibe} 
-        autoPlay 
-        loop 
-        muted 
-        playsInline 
-        style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.4, zIndex: -1 }}
-      >
+      {/* THE CURATED ATMOSPHERE */}
+      <video autoPlay loop muted playsInline style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.4, zIndex: -1 }}>
         <source src={`${bucketUrl}/${vibe}.mp4`} type="video/mp4" />
       </video>
 
-      {/* AMBIENT SOUND */}
-      <audio ref={audioRef} autoPlay loop muted={isMuted} src={`${bucketUrl}/ambient.mp3`} preload="auto" />
+      {/* THE PIANO SANCTUARY AUDIO */}
+      <audio autoPlay loop src={`${bucketUrl}/piano.mp3`} />
 
-      <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px', paddingTop: '10vh' }}>
-        <button 
-          onClick={() => setIsMuted(!isMuted)} 
-          style={{ position: 'absolute', top: '20px', right: '20px', border: '1px solid gold', background: 'none', color: 'gold', borderRadius: '50%', width: '40px', height: '40px', cursor: 'pointer', zIndex: 10 }}
-        >
-          {isMuted ? '🔇' : '🔊'}
-        </button>
+      <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '40px' }}>
         
-        <div style={{ maxWidth: '750px', textAlign: 'center', marginBottom: '8vh', padding: '40px', background: 'rgba(0,0,0,0.7)', borderRadius: '30px', border: '1px solid rgba(212,175,55,0.4)', boxShadow: '0 20px 60px rgba(0,0,0,0.8)' }}>
-          <p style={{ color: '#D4AF37', fontSize: '1.8rem', fontStyle: 'italic', lineHeight: '1.7' }}>
-            "{decodeURIComponent(message.replace(/\+/g, ' '))}"
-          </p>
+        {/* THE MESSAGE */}
+        <div style={{ background: 'rgba(0,0,0,0.6)', padding: '40px', borderRadius: '30px', border: '1px solid rgba(212,175,55,0.2)', textAlign: 'center', marginBottom: '40px', maxWidth: '800px' }}>
+            <p style={{ fontStyle: 'italic', fontSize: '1.8rem' }}>"{decodeURIComponent(message.replace(/\+/g, ' '))}"</p>
         </div>
 
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '25px', flexWrap: 'wrap', maxWidth: '1100px', marginBottom: '10vh' }}>
-          {wordsArray.map((w, i) => (
-            <div key={i} className="group" style={{ textAlign: 'center', cursor: 'pointer' }}>
-              <div style={{ display: 'flex', border: '1px solid #D4AF37', borderRadius: '12px', overflow: 'hidden', background: 'rgba(0,0,0,0.8)' }}>
-                <img src={`${bucketUrl}/${w.first}5.png`} style={{ width: '90px', height: '130px', objectFit: 'cover' }} />
-                <img src={`${bucketUrl}/${w.oneBeforeLast}5.png`} style={{ width: '90px', height: '130px', objectFit: 'cover' }} />
+        {/* THE STASHED ARTISTIC TILES */}
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '15px', flexWrap: 'wrap' }}>
+          {selectedWords.map((word, i) => {
+            const clean = word.replace(/[^a-zA-Z]/g, "").toUpperCase();
+            const first = clean[0] || 'A';
+            const oneBeforeLast = clean.length > 1 ? clean[clean.length - 2] : first;
+            return (
+              <div key={i} style={{ border: '1px solid #D4AF37', borderRadius: '8px', overflow: 'hidden', width: '100px', height: '140px' }}>
+                <img src={`${bucketUrl}/${first}${folder}.png`} style={{ width: '50%', height: '100%', objectFit: 'cover' }} />
+                <img src={`${bucketUrl}/${oneBeforeLast}${folder}.png`} style={{ width: '50%', height: '100%', objectFit: 'cover' }} />
               </div>
-              <p className="secret-label" style={{ color: '#D4AF37', marginTop: '15px', letterSpacing: '4px', fontSize: '0.8rem', opacity: 0, transition: '0.5s' }}>{w.original}</p>
-            </div>
-          ))}
+            );
+          })}
         </div>
-
-        <button 
-          onClick={() => {
-            navigator.clipboard.writeText(window.location.href);
-            alert("Gift Link Copied!");
-          }} 
-          style={{ padding: '15px 40px', background: '#D4AF37', color: '#000', border: 'none', borderRadius: '50px', fontWeight: 'bold', cursor: 'pointer', letterSpacing: '2px' }}
-        >
-          COPY GIFT LINK TO SHARE
-        </button>
       </div>
-      <style jsx>{` .group:hover .secret-label { opacity: 1 !important; } `}</style>
     </main>
   );
 }
 
-export default function OpenPage() { 
-  return <Suspense fallback={<div style={{ background: '#000', minHeight: '100vh' }} />}><OpenContent /></Suspense>; 
-}
+export default function OpenPage() { return <Suspense><OpenContent /></Suspense>; }
