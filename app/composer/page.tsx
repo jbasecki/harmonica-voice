@@ -22,16 +22,34 @@ function ComposerContent() {
       </video>
 
       <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px', paddingTop: '5vh' }}>
+        {/* PREVIEW TILES WITH LABELS FOR CLARITY */}
+        <div style={{ width: '100%', maxWidth: '1100px', display: 'flex', justifyContent: 'center', gap: '15px', flexWrap: 'wrap', marginBottom: '30px' }}>
+          {selectedWords.map((word, i) => {
+            const clean = word.replace(/[^a-zA-Z]/g, "").toUpperCase();
+            const first = clean[0] || 'A';
+            const oneBeforeLast = clean.length > 1 ? clean[clean.length - 2] : first;
+            return (
+              <div key={i} style={{ textAlign: 'center' }}>
+                <div style={{ display: 'flex', border: '1px solid #D4AF37', borderRadius: '8px', overflow: 'hidden', width: '100px', height: '140px' }}>
+                  <img src={`${bucketUrl}/${first}5.png`} style={{ width: '50%', height: '100%', objectFit: 'cover' }} />
+                  <img src={`${bucketUrl}/${oneBeforeLast}5.png`} style={{ width: '50%', height: '100%', objectFit: 'cover' }} />
+                </div>
+                <p style={{ fontSize: '0.7rem', marginTop: '5px' }}>{word.toUpperCase()}</p>
+              </div>
+            );
+          })}
+        </div>
+
         <div style={{ width: '100%', maxWidth: '800px', padding: '40px', background: 'rgba(15, 15, 15, 0.9)', borderRadius: '30px', border: '1px solid #333' }}>
           <textarea 
             placeholder="Write your message here..."
             value={text}
             onChange={(e) => setText(e.target.value)}
-            style={{ width: '100%', background: 'transparent', border: 'none', color: '#D4AF37', fontSize: '1.4rem', outline: 'none', height: '180px', resize: 'none', marginBottom: '25px', lineHeight: '1.6' }}
+            style={{ width: '100%', background: 'transparent', border: 'none', color: '#D4AF37', fontSize: '1.4rem', outline: 'none', height: '180px', resize: 'none', marginBottom: '25px' }}
           />
-          <div style={{ borderTop: '1px solid #222', paddingTop: '20px', display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
             {words.map((word, i) => (
-              <span key={i} onClick={() => toggleWord(word)} style={{ cursor: 'pointer', padding: '8px 16px', borderRadius: '8px', background: selectedWords.includes(word) ? '#D4AF37' : 'transparent', color: selectedWords.includes(word) ? '#000' : '#D4AF37', border: '1px solid #D4AF37' }}>{word}</span>
+              <button key={i} onClick={() => toggleWord(word)} style={{ padding: '8px 16px', borderRadius: '8px', background: selectedWords.includes(word) ? '#D4AF37' : 'transparent', color: selectedWords.includes(word) ? '#000' : '#D4AF37', border: '1px solid #D4AF37', cursor: 'pointer' }}>{word}</button>
             ))}
           </div>
         </div>
