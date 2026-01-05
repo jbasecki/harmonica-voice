@@ -5,6 +5,8 @@ import { useSearchParams } from 'next/navigation';
 function OpenContent() {
   const searchParams = useSearchParams();
   const [isMuted, setIsMuted] = useState(false);
+  
+  // Vibe Continuity: Pulls 'vibe=1' or whichever was chosen
   const vibe = searchParams.get('vibe') || '14'; 
   const message = searchParams.get('message') || '';
   const tiles = searchParams.get('tiles') || '';
@@ -19,7 +21,6 @@ function OpenContent() {
   });
 
   const copyGiftLink = () => {
-    // This will copy the link with your domain once Vercel is linked
     navigator.clipboard.writeText(window.location.href);
     alert("Gift Link Copied to Clipboard!");
   };
@@ -27,7 +28,7 @@ function OpenContent() {
   return (
     <main style={{ minHeight: '100vh', background: '#000', position: 'relative', overflowX: 'hidden', fontFamily: 'serif' }}>
       
-      {/* VIDEO FIX: The 'key' attribute forces the player to find the bucket file */}
+      {/* THE CINEMATIC FIX: Key attribute forces browser to play */}
       <video 
         key={vibe} 
         autoPlay 
@@ -39,33 +40,36 @@ function OpenContent() {
         <source src={`${bucketUrl}/${vibe}.mp4`} type="video/mp4" />
       </video>
 
+      {/* AMBIENT SANCTUARY */}
       <audio ref={audioRef} autoPlay loop muted={isMuted} src={`${bucketUrl}/ambient.mp3`} preload="auto" />
 
       <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px', paddingTop: '10vh' }}>
         
-        {/* THE HERO MESSAGE: Your English heart */}
-        <div style={{ maxWidth: '750px', textAlign: 'center', marginBottom: '8vh', padding: '40px', background: 'rgba(0,0,0,0.7)', borderRadius: '30px', border: '1px solid rgba(212,175,55,0.4)', boxShadow: '0 20px 60px rgba(0,0,0,0.8)' }}>
+        {/* HERO MESSAGE */}
+        <div style={{ maxWidth: '850px', textAlign: 'center', marginBottom: '6vh', padding: '40px', background: 'rgba(0,0,0,0.7)', borderRadius: '30px', border: '1px solid rgba(212,175,55,0.4)', boxShadow: '0 20px 60px rgba(0,0,0,0.8)' }}>
           <p style={{ color: '#D4AF37', fontSize: '1.8rem', fontStyle: 'italic', lineHeight: '1.7' }}>
             "{decodeURIComponent(message.replace(/\+/g, ' '))}"
           </p>
         </div>
 
-        {/* TILES GRID */}
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '25px', flexWrap: 'wrap', maxWidth: '1100px', marginBottom: '10vh' }}>
+        {/* HARMONICA GRID: Responsive layout for two rows */}
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '25px', flexWrap: 'wrap', maxWidth: '1000px', marginBottom: '8vh' }}>
           {wordsArray.map((w, i) => (
             <div key={i} className="group" style={{ textAlign: 'center', cursor: 'pointer' }}>
-              <div style={{ display: 'flex', border: '1px solid #D4AF37', borderRadius: '12px', overflow: 'hidden', background: 'rgba(0,0,0,0.8)' }}>
-                {/* Rule: UpperCase + 5 Suffix */}
-                <img src={`${bucketUrl}/${w.first}5.png`} style={{ width: '90px', height: '130px', objectFit: 'cover' }} />
-                <img src={`${bucketUrl}/${w.oneBeforeLast}5.png`} style={{ width: '90px', height: '130px', objectFit: 'cover' }} />
+              <div style={{ display: 'flex', border: '1px solid #D4AF37', borderRadius: '12px', overflow: 'hidden', background: 'rgba(0,0,0,0.8)', boxShadow: '0 0 30px rgba(212,175,55,0.2)' }}>
+                {/* Bucket Letter Rule: Uppercase + 5 suffix */}
+                <img src={`${bucketUrl}/${w.first}5.png`} style={{ width: '90px', height: '130px', objectFit: 'cover' }} alt="" />
+                <img src={`${bucketUrl}/${w.oneBeforeLast}5.png`} style={{ width: '90px', height: '130px', objectFit: 'cover' }} alt="" />
               </div>
-              <p className="secret-label" style={{ color: '#D4AF37', marginTop: '15px', letterSpacing: '4px', fontSize: '0.8rem', opacity: 0, transition: '0.5s' }}>{w.original}</p>
+              <p className="secret-label" style={{ color: '#D4AF37', marginTop: '15px', letterSpacing: '4px', fontSize: '0.8rem', opacity: 0, transition: '0.5s' }}>
+                {w.original}
+              </p>
             </div>
           ))}
         </div>
 
-        {/* SHAREABLE PACKAGE */}
-        <button onClick={copyGiftLink} style={{ padding: '15px 40px', background: '#D4AF37', color: '#000', border: 'none', borderRadius: '50px', fontWeight: 'bold', cursor: 'pointer', letterSpacing: '2px', marginBottom: '50px' }}>
+        {/* THE FINAL SHARE PACKAGE */}
+        <button onClick={copyGiftLink} style={{ padding: '15px 40px', background: '#D4AF37', color: '#000', border: 'none', borderRadius: '50px', fontWeight: 'bold', cursor: 'pointer', letterSpacing: '2px', marginBottom: '40px' }}>
           COPY GIFT LINK TO SHARE
         </button>
       </div>
