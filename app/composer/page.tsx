@@ -22,8 +22,6 @@ function ComposerContent() {
       </video>
 
       <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px', paddingTop: '5vh' }}>
-        
-        {/* ART PREVIEW: Showing the golden alphabet */}
         <div style={{ width: '100%', maxWidth: '1100px', display: 'flex', justifyContent: 'center', gap: '15px', flexWrap: 'wrap', marginBottom: '30px', minHeight: '180px' }}>
           {selectedWords.map((word, i) => {
             const clean = word.replace(/[^a-zA-Z]/g, "").toUpperCase();
@@ -55,7 +53,6 @@ function ComposerContent() {
           </div>
         </div>
 
-        {/* NAVIGATION: Sends the user to the Chapter II Curation */}
         <button 
           onClick={() => {
             const params = new URLSearchParams();
