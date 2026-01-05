@@ -18,14 +18,13 @@ function Composer2Content() {
     { id: '18', name: 'SNOWY' }
   ];
 
-  // CHOICE B: Nano Banana AI Logic
+  // CHOICE B: Nano Banana AI Logic Bridge
   const triggerNanoBanana = async () => {
     setIsAiLoading(true);
-    // Constructing the prompt based on your stashed cognition
-    console.log("AI Prompt Created:", `A cinematic gold visual of: ${message}`);
+    // Future: Call generateAiVideo(decodeURIComponent(message)) here
+    console.log("Generating AI Vision for:", decodeURIComponent(message));
     
-    // Simulate API delay for Nano Banana generation
-    await new Promise(resolve => setTimeout(resolve, 3500));
+    await new Promise(resolve => setTimeout(resolve, 4000)); // Simulate delay
     
     setIsAiLoading(false);
     alert("Nano Banana Vision Drafted. Once the API is linked, your video will swap here.");
@@ -38,7 +37,7 @@ function Composer2Content() {
   return (
     <main style={{ minHeight: '100vh', background: '#000', color: '#D4AF37', position: 'relative', overflowX: 'hidden', fontFamily: 'serif' }}>
       
-      {/* ATMOSPHERIC BACKGROUND */}
+      {/* BACKGROUND VIDEO */}
       <video ref={videoRef} key={vibe} autoPlay loop muted playsInline style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.4, zIndex: -1 }}>
         <source src={`${bucketUrl}/${vibe}.mp4`} type="video/mp4" />
       </video>
