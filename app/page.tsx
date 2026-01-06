@@ -1,50 +1,60 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 
-export default function LandingPage() {
-  const [selectedVibe, setSelectedVibe] = useState('14'); 
+function ComposerContent() {
+  const searchParams = useSearchParams();
+  const vibe = searchParams.get('vibe') || '12'; 
+  const [text, setText] = useState('');
+  const [selectedWords, setSelectedWords] = useState<string[]>([]);
+  const bucketUrl = "https://storage.googleapis.com/simple-bucket-27";
 
-  useEffect(() => {
-    // Picks a random starting point (1-19) for fresh ad content every load
-    const randomVibe = Math.floor(Math.random() * 19) + 1;
-    setSelectedVibe(randomVibe.toString());
-  }, []);
+  const toggleWord = (word: string) => {
+    setSelectedWords(prev => prev.includes(word) ? prev.filter(w => w !== word) : [...prev, word]);
+  };
+
+  const words = text.split(/[ \n]+/).filter(Boolean);
 
   return (
-    <main style={{ minHeight: '100vh', background: '#000', color: '#D4AF37', position: 'relative', overflow: 'hidden', fontFamily: 'serif' }}>
-      {/* FULL SCREEN MP4 ENGINE */}
-      <video key={selectedVibe} autoPlay loop muted playsInline 
-        style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.4 }}>
-        <source src={`https://storage.googleapis.com/simple-bucket-27/${selectedVibe}.mp4`} type="video/mp4" />
+    <main style={{ minHeight: '100vh', background: '#000', position: 'relative', overflow: 'hidden', fontFamily: 'serif' }}>
+      
+      {/* THE CINEMATIC FLOOR */}
+      <video key={vibe} autoPlay loop muted playsInline style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }}>
+        <source src={`${bucketUrl}/${vibe}.mp4`} type="video/mp4" />
       </video>
 
-      <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', minHeight: '100vh' }}>
-        <h3 style={{ textAlign: 'center', letterSpacing: '10px', fontSize: '1rem', marginTop: '60px' }}>HOW TO GIFT A HARMONICA</h3>
+      {/* PIANO SANCTUARY AUDIO */}
+      <audio autoPlay loop src={`${bucketUrl}/piano.mp3`} />
+
+      <div style={{ position: 'relative', zIndex: 3, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', padding: '20px' }}>
         
-        <nav style={{ display: 'flex', justifyContent: 'center', gap: '60px', padding: '30px', borderBottom: '1px solid rgba(212, 175, 55, 0.3)', width: '80%' }}>
-          <span>1. COMPOSE</span><span>2. STASH</span><span>3. PRODUCE</span><span>4. SHARE</span>
-        </nav>
-
-        <div style={{ marginTop: '12vh', textAlign: 'center' }}>
-          <h1 style={{ fontSize: '5.5rem', letterSpacing: '35px', margin: '0' }}>HARMONICA</h1>
-          <p style={{ fontSize: '1.2rem', letterSpacing: '6px', opacity: 0.7, fontStyle: 'italic' }}>A Sanctuary for Stashed Cognition</p>
-
-          {/* VIBE PICKER (NUMBERS ONLY) */}
-          <div style={{ marginTop: '10vh', display: 'grid', gridTemplateColumns: 'repeat(10, 1fr)', gap: '15px', maxWidth: '500px', margin: '10vh auto 0' }}>
-            {Array.from({ length: 19 }, (_, i) => i + 1).map((num) => (
-              <button key={num} onClick={() => setSelectedVibe(num.toString())}
-                style={{ background: 'transparent', border: 'none', color: selectedVibe === num.toString() ? '#D4AF37' : 'rgba(212, 175, 55, 0.4)', cursor: 'pointer', fontSize: '0.9rem', fontWeight: selectedVibe === num.toString() ? 'bold' : 'normal' }}>
-                {num}
-              </button>
-            ))}
-          </div>
-
-          <button onClick={() => window.location.href = `/composer?vibe=${selectedVibe}`}
-            style={{ marginTop: '8vh', padding: '18px 90px', border: '1px solid #D4AF37', background: 'transparent', color: '#D4AF37', letterSpacing: '10px', borderRadius: '50px', cursor: 'pointer' }}>
-            CONFIRM PATH
-          </button>
+        {/* TILE SHELF: DUAL-LETTER LOGIC WITH GOLD LABELS */}
+        <div style={{ display: 'flex', gap: '20px', marginBottom: '40px', minHeight: '160px', flexWrap: 'wrap', justifyContent: 'center' }}>
+          {selectedWords.map((word, i) => {
+            const clean = word.replace(/[^a-zA-Z]/g, "").toUpperCase();
+            const first = clean[0] || 'A';
+            const penult = clean.length > 1 ? clean[clean.length - 2] : first;
+            
+            return (
+              <div key={i} style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <div style={{ display: 'flex', gap: '6px' }}>
+                  <div style={{ border: '2px solid #D4AF37', borderRadius: '10px', overflow: 'hidden', width: '60px', height: '85px', background: 'rgba(0,0,0,0.8)', boxShadow: '0 10px 20px rgba(0,0,0,0.5)' }}>
+                    <img src={`${bucketUrl}/${first}5.png`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  </div>
+                  <div style={{ border: '2px solid #D4AF37', borderRadius: '10px', overflow: 'hidden', width: '60px', height: '85px', background: 'rgba(0,0,0,0.8)', boxShadow: '0 10px 20px rgba(0,0,0,0.5)' }}>
+                    <img src={`${bucketUrl}/${penult}5.png`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  </div>
+                </div>
+                <p style={{ color: '#D4AF37', fontSize: '0.75rem', marginTop: '12px', fontWeight: 'bold', letterSpacing: '2px', textShadow: '2px 2px 4px #000' }}>
+                  {word.toLowerCase()}
+                </p>
+              </div>
+            );
+          })}
         </div>
-      </div>
-    </main>
-  );
-}
+
+        <textarea 
+          placeholder="Write your thought..."
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          style={{ width: '85%',
