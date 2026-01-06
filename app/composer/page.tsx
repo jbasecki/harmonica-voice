@@ -57,8 +57,7 @@ function ComposerContent() {
           <div style={{ background: '#0a0a0a', border: '2px solid #D4AF37', padding: '50px', borderRadius: '30px', width: '450px', textAlign: 'center', boxShadow: '0 0 50px rgba(212,175,55,0.2)' }}>
             <h3 style={{ color: '#D4AF37', letterSpacing: '4px', marginBottom: '10px' }}>SEAL YOUR GIFT</h3>
             <p style={{ color: '#888', fontSize: '0.8rem', marginBottom: '30px' }}>Secure Processing via Stripe • $0.99</p>
-            <div style={{ padding: '20px', background: '#1a1a1a', borderRadius: '10px', marginBottom: '30px', border: '1px solid #333', color: '#555' }}>
-              Stripe Credit Card Element loads here...
+            <div style={{ padding: 
             </div>
             <button 
   onClick={() => window.location.href = https://buy.stripe.com/00w28s3mQ7dj6srevQfnO0b
