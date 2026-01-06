@@ -71,6 +71,7 @@ function ComposerContent() {
                     <img src={`${bucketUrl}/${penult}5.png`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                   </div>
                 </div>
+                {/* THE MISSING GOLD LABEL */}
                 <p style={{ color: '#D4AF37', fontSize: '0.75rem', marginTop: '12px', fontWeight: 'bold', letterSpacing: '2px', textShadow: '2px 2px 4px #000' }}>
                   {word.toLowerCase()}
                 </p>
