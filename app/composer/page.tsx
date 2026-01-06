@@ -19,21 +19,27 @@ function ComposerContent() {
   return (
     <main style={{ minHeight: '100vh', background: '#000', position: 'relative', overflow: 'hidden', fontFamily: 'serif' }}>
       
-      {/* THE CINEMATIC FLOOR */}
       <video key={vibe} autoPlay loop muted playsInline style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }}>
         <source src={`${bucketUrl}/${vibe}.mp4`} type="video/mp4" />
       </video>
 
-      {/* PIANO SANCTUARY AUDIO */}
       <audio autoPlay loop src={`${bucketUrl}/piano.mp3`} />
 
-      {/* MODAL: STRIPE CHECKOUT */}
+      {/* MODAL: EMBEDDED STRIPE ELEMENTS */}
       {showStripe && (
-        <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.85)', zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.9)', zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(10px)' }}>
           <div style={{ background: '#0a0a0a', border: '2px solid #D4AF37', padding: '40px', borderRadius: '30px', width: '450px', textAlign: 'center', boxShadow: '0 0 50px rgba(212,175,55,0.2)' }}>
             <h3 style={{ color: '#D4AF37', letterSpacing: '4px', marginBottom: '10px' }}>SEAL YOUR GIFT</h3>
-            <p style={{ color: '#888', fontSize: '0.8rem', marginBottom: '30px' }}>Secure Processing via Stripe • $0.99</p>
+            <p style={{ color: '#888', fontSize: '0.8rem', marginBottom: '30px' }}>Secure Processing • $0.99</p>
             
+            {/* THE "STRIPE ELEMENTS" LOOK */}
+            <div style={{ marginBottom: '20px', textAlign: 'left' }}>
+              <label style={{ color: '#D4AF37', fontSize: '0.6rem', letterSpacing: '1px' }}>CARD DETAILS</label>
+              <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid #333', padding: '15px', borderRadius: '10px', marginTop: '5px', color: '#fff', fontSize: '0.9rem' }}>
+                XXXX XXXX XXXX XXXX
+              </div>
+            </div>
+
             <button 
               onClick={() => window.location.href = 'https://buy.stripe.com/7sYbJ27D6fJP7wvevQfnO0c'} 
               style={{ width: '100%', background: '#D4AF37', color: '#000', padding: '18px', borderRadius: '50px', border: 'none', fontWeight: 'bold', cursor: 'pointer', letterSpacing: '2px' }}>
@@ -47,16 +53,20 @@ function ComposerContent() {
 
       <div style={{ position: 'relative', zIndex: 3, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', padding: '20px' }}>
         
-        {/* TILE SHELF */}
+        {/* TILE SHELF: DUAL-LETTER LOGIC */}
         <div style={{ display: 'flex', gap: '15px', marginBottom: '40px', minHeight: '140px', flexWrap: 'wrap', justifyContent: 'center' }}>
           {selectedWords.map((word, i) => {
-            const char = word.replace(/[^a-zA-Z]/g, "").toUpperCase()[0] || 'A';
+            const clean = word.replace(/[^a-zA-Z]/g, "").toUpperCase();
+            const first = clean[0] || 'A';
+            const penult = clean.length > 1 ? clean[clean.length - 2] : first;
             return (
-              <div key={i} style={{ textAlign: 'center' }}>
-                <div style={{ border: '2px solid #D4AF37', borderRadius: '10px', overflow: 'hidden', width: '85px', height: '120px', background: 'rgba(0,0,0,0.8)', boxShadow: '0 10px 20px rgba(0,0,0,0.5)' }}>
-                  <img src={`${bucketUrl}/${char}5.png`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              <div key={i} style={{ textAlign: 'center', display: 'flex', gap: '4px' }}>
+                <div style={{ border: '2px solid #D4AF37', borderRadius: '8px', overflow: 'hidden', width: '55px', height: '80px', background: 'rgba(0,0,0,0.8)' }}>
+                  <img src={`${bucketUrl}/${first}5.png`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 </div>
-                <p style={{ color: '#D4AF37', fontSize: '0.7rem', marginTop: '10px', fontWeight: 'bold', letterSpacing: '1px' }}>{word.toUpperCase()}</p>
+                <div style={{ border: '2px solid #D4AF37', borderRadius: '8px', overflow: 'hidden', width: '55px', height: '80px', background: 'rgba(0,0,0,0.8)' }}>
+                  <img src={`${bucketUrl}/${penult}5.png`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                </div>
               </div>
             );
           })}
@@ -72,7 +82,7 @@ function ComposerContent() {
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', justifyContent: 'center', maxWidth: '850px', marginTop: '30px' }}>
           {words.map((word, i) => (
             <button key={i} onClick={() => toggleWord(word)} 
-              style={{ padding: '10px 20px', border: '1px solid rgba(212,175,55,0.4)', background: selectedWords.includes(word) ? '#D4AF37' : 'rgba(0,0,0,0.5)', color: selectedWords.includes(word) ? '#000' : '#D4AF37', borderRadius: '10px', cursor: 'pointer', fontWeight: 'bold', backdropFilter: 'blur(5px)', transition: '0.3s' }}>
+              style={{ padding: '10px 20px', border: '1px solid rgba(212,175,55,0.4)', background: selectedWords.includes(word) ? '#D4AF37' : 'rgba(0,0,0,0.5)', color: selectedWords.includes(word) ? '#000' : '#D4AF37', borderRadius: '10px', cursor: 'pointer', fontWeight: 'bold' }}>
               {word}
             </button>
           ))}
@@ -80,9 +90,7 @@ function ComposerContent() {
 
         {text.length > 0 && (
           <div style={{ marginTop: '50px' }}>
-            <button 
-              onClick={() => setShowStripe(true)} 
-              style={{ padding: '20px 80px', background: '#D4AF37', color: '#000', borderRadius: '50px', fontWeight: 'bold', border: 'none', letterSpacing: '4px', fontSize: '1.1rem', cursor: 'pointer', boxShadow: '0 0 30px rgba(212,175,55,0.3)' }}>
+            <button onClick={() => setShowStripe(true)} style={{ padding: '20px 80px', background: '#D4AF37', color: '#000', borderRadius: '50px', fontWeight: 'bold', border: 'none', letterSpacing: '4px', fontSize: '1.1rem', cursor: 'pointer' }}>
               PAY & SEND
             </button>
           </div>
