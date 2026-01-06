@@ -1,34 +1,45 @@
-import type { Metadata } from "next";
-import "./globals.css";
+import './globals.css'
+import { Inter } from 'next/font/google'
 
-export const metadata: Metadata = {
-  title: "Harmonica Voice | A Patented Gift",
-  description: "Experience a cognitive stash of thought within a cinematic piano sanctuary.",
+const inter = Inter({ subsets: ['latin'] })
+
+export const metadata = {
+  title: 'Harmonica Voice',
+  description: 'Exchanging visuals for meaningful communication',
   openGraph: {
-    title: "Harmonica Voice",
-    description: "Someone sent you a stashed thought in a dual-modality sanctuary.",
-    url: "https://harmonica-voice.vercel.app",
-    siteName: "Harmonica Voice",
+    title: 'Harmonica Voice',
+    description: 'A Sanctuary for your thoughts.',
+    url: 'https://harmonica-voice.vercel.app',
+    siteName: 'Harmonica Voice',
     images: [
       {
-        url: "https://storage.googleapis.com/simple-bucket-27/7.jpg", // A static image of your Golden Tree
+        url: '/mushroom-preview.jpg', // Points to the file you just committed
         width: 1200,
         height: 630,
+        alt: 'Harmonica Voice Sanctuary',
       },
     ],
-    locale: "en_US",
-    type: "website",
+    locale: 'en_US',
+    type: 'website',
   },
-};
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Harmonica Voice',
+    description: 'A Sanctuary for your thoughts.',
+    images: ['/mushroom-preview.jpg'], // Ensures the mushroom appears on X
+  },
+}
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: {
+  children: React.ReactNode
+}) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className={inter.className} style={{ margin: 0, background: '#000' }}>
+        {children}
+      </body>
     </html>
-  );
+  )
 }
