@@ -10,7 +10,9 @@ function ComposerContent() {
   const bucketUrl = "https://storage.googleapis.com/simple-bucket-27";
 
   const toggleWord = (word: string) => {
-    setSelectedWords(prev => prev.includes(word) ? prev.filter(w => w !== word) : [...prev, word]);
+    setSelectedWords(prev => 
+      prev.includes(word) ? prev.filter(w => w !== word) : [...prev, word]
+    );
   };
 
   const words = text.split(/[ \n]+/).filter(Boolean);
@@ -28,7 +30,7 @@ function ComposerContent() {
 
       <div style={{ position: 'relative', zIndex: 3, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', padding: '20px' }}>
         
-        {/* TILE SHELF: DUAL-LETTER LOGIC WITH GOLD LABELS */}
+        {/* TILE SHELF */}
         <div style={{ display: 'flex', gap: '20px', marginBottom: '40px', minHeight: '160px', flexWrap: 'wrap', justifyContent: 'center' }}>
           {selectedWords.map((word, i) => {
             const clean = word.replace(/[^a-zA-Z]/g, "").toUpperCase();
@@ -38,14 +40,14 @@ function ComposerContent() {
             return (
               <div key={i} style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <div style={{ display: 'flex', gap: '6px' }}>
-                  <div style={{ border: '2px solid #D4AF37', borderRadius: '10px', overflow: 'hidden', width: '60px', height: '85px', background: 'rgba(0,0,0,0.8)', boxShadow: '0 10px 20px rgba(0,0,0,0.5)' }}>
+                  <div style={{ border: '2px solid #D4AF37', borderRadius: '10px', overflow: 'hidden', width: '60px', height: '85px', background: 'rgba(0,0,0,0.8)' }}>
                     <img src={`${bucketUrl}/${first}5.png`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                   </div>
-                  <div style={{ border: '2px solid #D4AF37', borderRadius: '10px', overflow: 'hidden', width: '60px', height: '85px', background: 'rgba(0,0,0,0.8)', boxShadow: '0 10px 20px rgba(0,0,0,0.5)' }}>
+                  <div style={{ border: '2px solid #D4AF37', borderRadius: '10px', overflow: 'hidden', width: '60px', height: '85px', background: 'rgba(0,0,0,0.8)' }}>
                     <img src={`${bucketUrl}/${penult}5.png`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                   </div>
                 </div>
-                <p style={{ color: '#D4AF37', fontSize: '0.75rem', marginTop: '12px', fontWeight: 'bold', letterSpacing: '2px', textShadow: '2px 2px 4px #000' }}>
+                <p style={{ color: '#D4AF37', fontSize: '0.75rem', marginTop: '12px', fontWeight: 'bold', letterSpacing: '2px' }}>
                   {word.toLowerCase()}
                 </p>
               </div>
@@ -57,4 +59,31 @@ function ComposerContent() {
           placeholder="Write your thought..."
           value={text}
           onChange={(e) => setText(e.target.value)}
-          style={{ width: '85%',
+          style={{ width: '85%', maxWidth: '900px', background: 'transparent', border: 'none', color: '#D4AF37', fontSize: '2.4rem', outline: 'none', height: '180px', resize: 'none', textAlign: 'center', fontStyle: 'italic', textShadow: '4px 4px 15px rgba(0,0,0,1)' }}
+        />
+
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', justifyContent: 'center', maxWidth: '850px', marginTop: '30px' }}>
+          {words.map((word, i) => (
+            <button key={i} onClick={() => toggleWord(word)} 
+              style={{ padding: '10px 20px', border: '1px solid rgba(212,175,55,0.4)', background: selectedWords.includes(word) ? '#D4AF37' : 'rgba(0,0,0,0.5)', color: selectedWords.includes(word) ? '#000' : '#D4AF37', borderRadius: '10px', cursor: 'pointer', fontWeight: 'bold' }}>
+              {word}
+            </button>
+          ))}
+        </div>
+
+        {/* PAY & SEND: DIRECT LINK TO STRIPE */}
+        {text.length > 0 && (
+          <div style={{ marginTop: '50px' }}>
+            <button 
+              onClick={() => window.location.href = 'https://buy.stripe.com/eVq00k2iM8hneYX73ofnO0d'} 
+              style={{ padding: '20px 80px', background: '#D4AF37', color: '#000', borderRadius: '50px', fontWeight: 'bold', border: 'none', letterSpacing: '4px', fontSize: '1.1rem', cursor: 'pointer', boxShadow: '0 0 30px rgba(212,175,55,0.3)' }}>
+              PAY & SEND
+            </button>
+          </div>
+        )}
+      </div>
+    </main>
+  );
+}
+
+export default function ComposerPage() { return <Suspense><ComposerContent /></Suspense>; }
